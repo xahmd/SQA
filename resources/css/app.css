@@ -1,0 +1,37 @@
+@keyframes pop {
+    50% {
+        transform: scale(1.08);
+    }
+}
+@keyframes push {
+    50% {
+        transform: scale(.95);
+    }
+}
+
+@font-face {
+    font-family: "Exo2";
+    src: url("../fonts/Exo2.ttf");
+}
+
+* {
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+    width: 0px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--scroll-bar-bg-color);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-bar-color);
+    border-radius: 20px;
+    border: 3px solid var(--scroll-bar-bg-color);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

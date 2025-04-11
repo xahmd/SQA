@@ -1,0 +1,33 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-0c1c7c6b.css",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/css/ckeditor-tailwind-reset.css": {
+    "file": "assets/ckeditor-tailwind-reset-10008f72.css",
+    "isEntry": true,
+    "src": "resources/css/ckeditor-tailwind-reset.css"
+  },
+  "resources/fonts/Exo2.ttf": {
+    "file": "assets/Exo2-67ae4e70.ttf",
+    "src": "resources/fonts/Exo2.ttf"
+  },
+  "resources/js/admin.css": {
+    "file": "assets/admin-43f1ec73.css",
+    "src": "resources/js/admin.css"
+  },
+  "resources/js/admin.js": {
+    "css": [
+      "assets/admin-43f1ec73.css"
+    ],
+    "file": "assets/admin-8f4907a8.js",
+    "isEntry": true,
+    "src": "resources/js/admin.js"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-6bb05423.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  }
+}
