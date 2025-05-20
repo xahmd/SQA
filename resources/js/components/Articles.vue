@@ -29,7 +29,7 @@
                     <td class="px-3 py-2 whitespace-nowrap">341<i class="ml-1 fa-regular fa-eye"></i></td>
                     <td class="px-3 py-1 whitespace-nowrap">
                         <router-link :to="'/articles/edit/' + article.id" class="bg-neutral-200 rounded py-1 px-2 hover:bg-neutral-300 text-neutral-700 mr-1"><i class="fa-solid fa-pen"></i></router-link>
-                        <button @click="destroy(recipe.id)" class="bg-neutral-200 rounded py-1 px-2 hover:bg-neutral-300 text-neutral-700"><i class="fa-solid fa-trash"></i></button>
+                        <button @click="destroy(article.id)" class="bg-neutral-200 rounded py-1 px-2 hover:bg-neutral-300 text-neutral-700"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -64,7 +64,10 @@ export default {
             fetch("/api/articles/" + id, {
                 method: "POST",
                 body: fd
-            }).then(() => this.$router.go())
+            }).then(() => {
+                alert('Article deleted successfully!')
+                this.$router.go()
+            })
         },
         fetchArticles() {
             fetch("/api/articles")
