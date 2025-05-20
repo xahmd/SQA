@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-	<title>Cuisine Compass | Taste the World | Food Blog</title>
-	<meta property="og:title" content="Cuisine Compass | Taste the World | Food Blog" />
-	<meta property="og:description" content="Cuisine Compass | Taste the World | Food Blog" />
+	<title>FOODSPHERE | Food Blog</title>
+	<meta property="og:title" content="FOODSPHERE| Food Blog" />
+	<meta property="og:description" content="FOODSPHERE | Food Blog" />
 	<meta property="og:image" content="" />
 	@include("inc.common_head_tags")
 	<script>

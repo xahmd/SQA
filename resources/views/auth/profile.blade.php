@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Profile | {{ env("APP_NAME", "Cuisine Compass") }}</title>
+	<title>Profile | {{ env("APP_NAME", "FOODSPHERE") }}</title>
 	@include("inc.common_head_tags")
 	<script>
 		class Router {

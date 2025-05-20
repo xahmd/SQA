@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Cuisine Compass</title>
+    <title>Admin Panel FOODSPHERE</title>
     @vite('resources/js/admin.js')
     @vite('resources/css/app.css')
     @vite('resources/css/ckeditor-tailwind-reset.css')

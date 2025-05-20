@@ -2,7 +2,7 @@
     <nav class="max-w-6xl mx-auto flex flex-wrap items-center">
         <span
             class="flex-0 md:flex-1 block w-full md:w-auto text-center py-1 md:py-0 md:text-left mr-0 md:mr-auto">&copy;
-            2023 <a href="/">Cuisine Compass</a></span>
+            2025 <a href="/">FOODSPHERE</a></span>
         <ul class="flex-0 md:flex-1 flex justify-center w-full md:w-auto py-1 md:py-0">
             <li class="px-1"><a class="hover:underline px-2 py-2 block" href="/">Home</a></li>
             <li class="px-1"><a class="hover:underline px-2 py-2 block" href="/">Categories</a></li>

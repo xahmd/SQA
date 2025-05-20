@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <title>Login | {{ env('APP_NAME', 'Cuisine Compass') }}</title>
-    <meta property="og:title" content="{{ env('APP_NAME', 'Cuisine Compass') }} | Taste the World | Food Blog" />
-    <meta property="og:description" content="{{ env('APP_NAME', 'Cuisine Compass') }} | Taste the World | Food Blog" />
+    <title>Login | {{ env('APP_NAME', 'FOODSPHERE') }}</title>
+<meta property="og:title" content="{{ env('APP_NAME', 'FOODSPHERE') }} | Taste the World | Food Blog" />
+    <meta property="og:description" content="{{ env('APP_NAME', 'FOODSPHERE') }} | Taste the World | Food Blog" />
     <meta property="og:image" content="" />
     @include('inc.common_head_tags')
     <script>
