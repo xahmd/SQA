@@ -2,8 +2,8 @@
     <div class="bg-neutral-100 p-0 animate-push">
         <form action="/api/articles" method="POST" autocomplete="off" enctype="multipart/form-data">
             <input type="hidden" name="_token" :value="csrf_token">
-            <h1 class="text-3xl font-semibold bg-white p-3">Create New Recipe</h1>
-            <p class="text-sm text-neutral-700 bg-white px-3 pb-3">Craft a Fresh, Innovative Recipe.</p>
+            <h1 class="text-3xl font-semibold bg-white p-3">Create New Article</h1>
+            <p class="text-sm text-neutral-700 bg-white px-3 pb-3">Craft a Fresh, Innovative Article</p>
             <div class="grid md:grid-cols-3 gap-3 mt-3">
                 <div class="col-span-2 p-3 bg-white">
                     <table class="w-full">
@@ -128,7 +128,7 @@ export default {
     },
     methods: {
         fetchCategories() {
-            fetch("/api/articles/categories")
+            fetch("/api/articles_categories")
                 .then(res => res.json())
                 .then(res => (this.categories = res));
         },

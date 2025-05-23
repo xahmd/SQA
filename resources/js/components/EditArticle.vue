@@ -2,8 +2,9 @@
     <div class="bg-neutral-100 p-0 animate-push">
         <form :action="'/api/articles/' + article.id" method="POST" autocomplete="off" enctype="multipart/form-data" v-if="article">
             <input type="hidden" name="_token" :value="csrf_token">
-            <h1 class="text-3xl font-semibold bg-white p-3">Create New article</h1>
-            <p class="text-sm text-neutral-700 bg-white px-3 pb-3">Craft a Fresh, Innovative article.</p>
+            <input type="hidden" name="_method" value="put">
+            <h1 class="text-3xl font-semibold bg-white p-3">Edit Article</h1>
+            <p class="text-sm text-neutral-700 bg-white px-3 pb-3">Update Your Article</p>
             <div class="grid md:grid-cols-3 gap-3 mt-3">
                 <div class="col-span-2 p-3 bg-white">
                     <table class="w-full">
