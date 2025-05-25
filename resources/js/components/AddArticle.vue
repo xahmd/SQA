@@ -1,6 +1,13 @@
 <template>
     <div class="bg-neutral-100 p-0 animate-push">
-        <form action="/api/articles" method="POST" autocomplete="off" enctype="multipart/form-data">
+        <div v-if="showSuccess" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline"> Article created successfully.</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="showSuccess = false">
+                <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
+        </div>
+        <form @submit.prevent="submitForm" action="/api/articles" method="POST" autocomplete="off" enctype="multipart/form-data">
             <input type="hidden" name="_token" :value="csrf_token">
             <h1 class="text-3xl font-semibold bg-white p-3">Create New Article</h1>
             <p class="text-sm text-neutral-700 bg-white px-3 pb-3">Craft a Fresh, Innovative Article</p>
@@ -124,6 +131,7 @@ export default {
             categories: [],
             article_tags: [],
             content: '',
+            showSuccess: false
         }
     },
     methods: {
@@ -193,6 +201,42 @@ export default {
                 const input = ev.currentTarget.querySelector("input[name='image'][type='file']");
                 input.files = ev.dataTransfer.files;
                 input.dispatchEvent(new Event("change"));
+            }
+        },
+        async submitForm(e) {
+            const formData = new FormData(e.target);
+            try {
+                const response = await fetch('/api/articles', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': this.csrf_token
+                    }
+                });
+                
+                if (response.ok) {
+                    this.showSuccess = true;
+                    // Reset form
+                    e.target.reset();
+                    this.imagePreview = null;
+                    this.article_tags = [];
+                    this.article_categories = [];
+                    this.content = '';
+                    watchdog.editor.setData('');
+                    
+                    // Scroll to top to show success message
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // Optionally redirect after a delay
+                    setTimeout(() => {
+                        this.$router.push('/articles');
+                    }, 2000);
+                } else {
+                    throw new Error('Failed to create article');
+                }
+            } catch (error) {
+                console.error('Error creating article:', error);
+                alert('Failed to create article. Please try again.');
             }
         },
     },
