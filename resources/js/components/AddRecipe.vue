@@ -1,6 +1,12 @@
 <template>
     <div class="bg-neutral-100 p-0 animate-push">
-        <form action="/api/recipes" method="POST" autocomplete="off" enctype="multipart/form-data">
+        <div v-if="errors.length > 0" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Please fix the following errors:</strong>
+            <ul class="mt-2 list-disc list-inside">
+                <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+            </ul>
+        </div>
+        <form @submit.prevent="submitForm" action="/api/recipes" method="POST" autocomplete="off" enctype="multipart/form-data">
             <input type="hidden" name="_token" :value="csrf_token">
             <h1 class="text-3xl font-semibold bg-white p-3">Create New Recipe</h1>
             <p class="text-sm text-neutral-700 bg-white px-3 pb-3">Craft a Fresh, Innovative Recipe.</p>
@@ -32,7 +38,7 @@
                                 <td class="w-[1%] py-2 px-4">Title</td>
                                 <td class="py-2 px-4">
                                     <div class="relative">
-                                        <input name="title" type="text" class="block p-2 bg-neutral-300 focus:bg-neutral-100 focus:shadow-[0_0_0_1px_#ddd] w-full h-10 outline-none">
+                                        <input name="title" type="text" v-model="recipeData.title" :class="{'border-red-500': errors.includes('Title is required')}" class="block p-2 bg-neutral-300 focus:bg-neutral-100 focus:shadow-[0_0_0_1px_#ddd] w-full h-10 outline-none">
                                     </div>
                                 </td>
                             </tr>
@@ -40,7 +46,7 @@
                                 <td class="w-[1%] py-2 px-4">Description</td>
                                 <td class="py-2 px-4">
                                     <div class="relative">
-                                        <input name="description" type="text" class="block p-2 bg-neutral-300 focus:bg-neutral-100 focus:shadow-[0_0_0_1px_#ddd] w-full h-10 outline-none">
+                                        <input name="description" type="text" v-model="recipeData.description" :class="{'border-red-500': errors.includes('Description is required')}" class="block p-2 bg-neutral-300 focus:bg-neutral-100 focus:shadow-[0_0_0_1px_#ddd] w-full h-10 outline-none">
                                     </div>
                                 </td>
                             </tr>
@@ -194,6 +200,12 @@ export default {
             recipe_tags: [],
             content: '',
             instructions: [],
+            errors: [],
+            recipeData: {
+                title: '',
+                description: '',
+            },
+            existingRecipes: []
         }
     },
     methods: {
@@ -207,7 +219,7 @@ export default {
                 .then((res) => (this.recipe_ingredients = res.filter(i => ["salt", "onions", "garlic", "olive oil", "pepper"].includes(i.name.toLowerCase()))))
         },
         fetchCategories() {
-            fetch("/api/recipes/categories")
+            fetch("/api/recipes_categories")
                 .then(res => res.json())
                 .then(res => (this.categories = res));
         },
@@ -253,13 +265,99 @@ export default {
                 input.dispatchEvent(new Event("change"));
             }
         },
+        fetchExistingRecipes() {
+            fetch("/api/recipes")
+                .then(res => res.json())
+                .then(res => {
+                    this.existingRecipes = res;
+                });
+        },
+        validateForm() {
+            this.errors = [];
+            
+            if (!this.recipeData.title.trim()) {
+                this.errors.push('Title is required');
+            }
+            
+            if (!this.recipeData.description.trim()) {
+                this.errors.push('Description is required');
+            }
+            
+            if (this.recipe_ingredients.length === 0) {
+                this.errors.push('At least one ingredient is required');
+            }
+            
+            if (this.recipe_cookingMethods.length === 0) {
+                this.errors.push('At least one cooking method is required');
+            }
+            
+            if (!this.content.trim()) {
+                this.errors.push('Content is required');
+            }
+            
+            if (this.instructions.length === 0) {
+                this.errors.push('At least one instruction is required');
+            }
+            
+            if (this.recipe_categories.length === 0) {
+                this.errors.push('At least one category is required');
+            }
+
+            const duplicateRecipe = this.existingRecipes.find(
+                recipe => recipe.title.toLowerCase() === this.recipeData.title.toLowerCase()
+            );
+            
+            if (duplicateRecipe) {
+                this.errors.push('A recipe with this title already exists');
+            }
+
+            return this.errors.length === 0;
+        },
+        async submitForm(e) {
+            if (!this.validateForm()) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('/api/recipes', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': this.csrf_token
+                    }
+                });
+
+                if (response.ok) {
+                    this.$router.push({
+                        path: '/recipes',
+                        query: { success: 'Recipe created successfully' }
+                    });
+                } else {
+                    const data = await response.json();
+                    if (data.errors) {
+                        this.errors = Object.values(data.errors).flat();
+                    } else {
+                        this.errors = ['Failed to create recipe. Please try again.'];
+                    }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('Error creating recipe:', error);
+                this.errors = ['An unexpected error occurred. Please try again.'];
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        },
     },
     mounted() {
         this.fetchIngredients()
         this.fetchCategories()
+        this.fetchExistingRecipes()
         watchdog
             .create(document.querySelector('.editor'), {
-                initialData: "I am an initial text",
+                initialData: "",
                 extraPlugins: [SimpleUploadAdapterPlugin],
             })
             .then(() => {
