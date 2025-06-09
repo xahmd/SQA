@@ -1,0 +1,14 @@
+/node_modules
+/vendor
+.git
+.gitignore
+.env
+.env.*
+*.log
+.DS_Store
+README.md
+docker-compose.yml
+Dockerfile
+.dockerignore
+screenshots/
+tests/ 
