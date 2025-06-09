@@ -35,8 +35,17 @@ RUN npm run build
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+# Create a script to run migrations and seeding
+RUN echo '#!/bin/bash\n\
+php artisan migrate --force\n\
+php artisan db:seed --force\n\
+php-fpm' > /var/www/start.sh
+
+# Make the script executable
+RUN chmod +x /var/www/start.sh
+
 # Expose port 9000
 EXPOSE 9000
 
-# Start PHP-FPM
-CMD ["php-fpm"] 
+# Start the application
+CMD ["/var/www/start.sh"] 
