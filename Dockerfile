@@ -26,12 +26,21 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy existing application directory
+# Copy composer files first to leverage Docker cache
+COPY composer.json composer.lock ./
+RUN composer install --no-scripts --no-autoloader
+
+# Copy package files for frontend
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy the rest of the application
 COPY . .
 
-# Install dependencies
-RUN composer install --no-interaction --no-dev --optimize-autoloader
-RUN npm install
+# Generate autoload files
+RUN composer dump-autoload --optimize
+
+# Build frontend assets
 RUN npm run build
 
 # Set permissions
