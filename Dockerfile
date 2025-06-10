@@ -33,6 +33,7 @@ RUN composer install --no-scripts --no-autoloader
 # Copy package files for frontend
 COPY package.json package-lock.json ./
 RUN npm install
+RUN npm install terser --save-dev
 
 # Copy the rest of the application
 COPY . .
@@ -40,7 +41,7 @@ COPY . .
 # Generate autoload files
 RUN composer dump-autoload --optimize
 
-# Build frontend assetss
+# Build frontend assets
 RUN npm run build
 
 # Set permissions
