@@ -40,7 +40,7 @@ COPY . .
 # Generate autoload files
 RUN composer dump-autoload --optimize
 
-# Build frontend assets
+# Build frontend assetss
 RUN npm run build
 
 # Set permissions
