@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     nodejs \
-    npm
+    npm \
+    netcat
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -37,6 +38,11 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Create a script to run migrations and seeding
 RUN echo '#!/bin/bash\n\
+echo "Waiting for database connection..."\n\
+while ! nc -z $DB_HOST $DB_PORT; do\n\
+  sleep 1\n\
+done\n\
+echo "Database is ready!"\n\
 php artisan migrate --force\n\
 php artisan db:seed --force\n\
 php-fpm' > /var/www/start.sh
