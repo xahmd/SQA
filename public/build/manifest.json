@@ -1,32 +1,38 @@
 {
+  "_vendor-52625329.js": {
+    "file": "assets/js/vendor-52625329.js"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-0c1c7c6b.css",
+    "file": "assets/css/app-eba1e9a6.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/ckeditor-tailwind-reset.css": {
-    "file": "assets/ckeditor-tailwind-reset-10008f72.css",
+    "file": "assets/css/ckeditor-tailwind-reset-10008f72.css",
     "isEntry": true,
     "src": "resources/css/ckeditor-tailwind-reset.css"
   },
   "resources/fonts/Exo2.ttf": {
-    "file": "assets/Exo2-67ae4e70.ttf",
+    "file": "assets/ttf/Exo2-67ae4e70.ttf",
     "src": "resources/fonts/Exo2.ttf"
   },
   "resources/js/admin.css": {
-    "file": "assets/admin-43f1ec73.css",
+    "file": "assets/css/admin-43f1ec73.css",
     "src": "resources/js/admin.css"
   },
   "resources/js/admin.js": {
     "css": [
-      "assets/admin-43f1ec73.css"
+      "assets/css/admin-43f1ec73.css"
     ],
-    "file": "assets/admin-8f4907a8.js",
+    "file": "assets/js/admin-71d74a0a.js",
+    "imports": [
+      "_vendor-52625329.js"
+    ],
     "isEntry": true,
     "src": "resources/js/admin.js"
   },
   "resources/js/app.js": {
-    "file": "assets/app-6bb05423.js",
+    "file": "assets/js/app-69f88d3e.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }

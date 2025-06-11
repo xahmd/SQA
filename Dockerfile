@@ -11,8 +11,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nodejs \
     npm \
-    netcat-openbsd \
-    nginx
+    netcat-openbsd
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -47,46 +46,16 @@ RUN npm run build
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Configure Nginx
-RUN echo "server {\n\
-    listen 80;\n\
-    server_name _;\n\
-    root /var/www/public;\n\
-    index index.php;\n\
-    location / {\n\
-        try_files \$uri \$uri/ /index.php?\$query_string;\n\
-    }\n\
-    location ~ \.php$ {\n\
-        fastcgi_pass 127.0.0.1:9000;\n\
-        fastcgi_index index.php;\n\
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;\n\
-        include fastcgi_params;\n\
-    }\n\
-}" > /etc/nginx/sites-available/default
-
-# Create a script to run migrations and seeding
+# Create a simple startup script
 RUN echo '#!/bin/bash\n\
-echo "Waiting for database connection..."\n\
-while ! nc -z $DB_HOST $DB_PORT; do\n\
-  sleep 1\n\
-done\n\
-echo "Database is ready!"\n\
 php artisan migrate --force\n\
-# Only seed if no admin exists\n\
-if ! php artisan tinker --execute="App\\Models\\Admin::count()" | grep -q "0"; then\n\
-    echo "Admin already exists, skipping seeding"\n\
-else\n\
-    php artisan db:seed --force\n\
-fi\n\
-# Start Nginx and PHP-FPM\n\
-service nginx start\n\
 php-fpm' > /var/www/start.sh
 
 # Make the script executable
 RUN chmod +x /var/www/start.sh
 
-# Expose port 80
-EXPOSE 80
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
 
 # Start the application
 CMD ["/var/www/start.sh"] 
