@@ -46,16 +46,22 @@ RUN npm run build
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Create a simple startup script
+# Create a startup script
 RUN echo '#!/bin/bash\n\
+echo "Waiting for database connection..."\n\
+while ! php artisan db:monitor --timeout=1 > /dev/null 2>&1; do\n\
+  echo "Waiting for database connection..."\n\
+  sleep 2\n\
+done\n\
+echo "Database is ready!"\n\
 php artisan migrate --force\n\
-php-fpm' > /var/www/start.sh
+php-fpm -F' > /var/www/start.sh
 
 # Make the script executable
 RUN chmod +x /var/www/start.sh
 
-# Expose port 9000 for PHP-FPM
-EXPOSE 9000
+# Expose port 10000 for Render.com
+EXPOSE 10000
 
 # Start the application
 CMD ["/var/www/start.sh"] 
